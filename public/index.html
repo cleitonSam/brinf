@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Briefing — Fluxo Digital Tech</title>
+<style>
+  :root{
+    --bg:#0a0a0a; --bg2:#111; --card:#15151a; --line:#262630;
+    --txt:#f5f5f5; --muted:#8a8a96; --accent:#22c55e; --accent2:#16a34a;
+    --ok:#3ddc84; --err:#ff4d6d; --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif}
+  body{background:var(--bg);color:var(--txt);min-height:100vh;line-height:1.55}
+  .wrap{max-width:880px;margin:0 auto;padding:40px 24px 80px}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
+  .logo{font-weight:800;letter-spacing:.18em;font-size:14px}
+  .logo span{color:var(--accent)}
+  .badge{font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  h1{font-size:clamp(28px,4vw,44px);font-weight:800;line-height:1.1;margin-bottom:10px}
+  h1 em{color:var(--accent);font-style:normal}
+  .lead{color:var(--muted);font-size:15px;margin-bottom:32px;max-width:620px}
+  .progress{height:4px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:8px}
+  .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .4s ease}
+  .step-label{font-size:12px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:24px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px;margin-bottom:18px}
+  .card h2{font-size:22px;margin-bottom:6px}
+  .card p.desc{color:var(--muted);font-size:14px;margin-bottom:22px}
+  .grid{display:grid;gap:14px}
+  .grid.cols-2{grid-template-columns:1fr 1fr}
+  @media(max-width:640px){.grid.cols-2{grid-template-columns:1fr}}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px;letter-spacing:.04em}
+  label b{color:var(--txt);font-weight:600}
+  input,textarea,select{width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--txt);padding:12px 14px;border-radius:10px;font-size:14px;transition:border .2s,background .2s;font-family:inherit;}
+  textarea{min-height:110px;resize:vertical}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);background:#1a1a20}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:24px}
+  button{cursor:pointer;border:none;border-radius:10px;padding:14px 24px;font-weight:700;font-size:14px;letter-spacing:.04em;transition:.2s;font-family:inherit}
+  .btn-primary{background:var(--accent);color:#0a0a0a}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(34,197,94,.25)}
+  .btn-primary:disabled{opacity:.6;cursor:wait}
+  .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .btn-ghost:hover{color:var(--txt);border-color:var(--accent)}
+  .step{display:none}
+  .step.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .repeat-block{background:var(--bg2);border:1px dashed var(--line);border-radius:10px;padding:16px;margin-bottom:10px;position:relative}
+  .repeat-block .rm{position:absolute;top:8px;right:10px;background:transparent;color:var(--err);border:none;font-size:12px;padding:4px 8px;cursor:pointer}
+  .add-btn{background:transparent;border:1px dashed var(--line);color:var(--accent);padding:10px;width:100%;border-radius:10px;cursor:pointer;font-size:13px}
+  .add-btn:hover{border-color:var(--accent)}
+  .success{text-align:center;padding:40px 20px}
+  .success .check{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#0a0a0a;display:grid;place-items:center;margin:0 auto 18px;font-size:30px;font-weight:900}
+  .pill{display:inline-block;background:rgba(34,197,94,.1);color:var(--accent);font-size:11px;padding:4px 10px;border-radius:99px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+  .req::after{content:" *";color:var(--accent)}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">FLUXO<span>DIGITAL</span> · BRIEFING</div>
+    <div class="badge" id="stepBadge">Etapa 1 / 9</div>
+  </header>
+  <h1>Conte tudo sobre o <em>seu projeto</em>.</h1>
+  <p class="lead">Esse formulário coleta as informações para construirmos seu site profissional. Leva cerca de 10 minutos.</p>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="step-label" id="stepText">Identidade da marca</div>
+  <form id="form" onsubmit="return false">
+    <section class="step active" data-title="Identidade da marca">
+      <div class="card"><h2>1 · Identidade da marca</h2><p class="desc">Quem é você ou sua empresa?</p>
+        <div class="grid cols-2">
+          <div><label class="req"><b>Nome da marca</b></label><input name="marca" required></div>
+          <div><label><b>Slogan</b></label><input name="slogan"></div>
+          <div><label class="req"><b>Segmento</b></label><input name="segmento" required></div>
+          <div><label><b>Cidade · Estado</b></label><input name="cidade"></div>
+        </div>
+        <div style="margin-top:14px"><label><b>Descrição curta</b></label><textarea name="descricao"></textarea></div>
+        <div class="grid cols-2" style="margin-top:14px">
+          <div><label><b>Cor principal</b></label><input name="cor1" placeholder="#22c55e"></div>
+          <div><label><b>Cor secundária</b></label><input name="cor2"></div>
+        </div>
+      </div>
+    </section>
+    <section class="step" data-title="Manifesto / Sobre">
+      <div class="card"><h2>2 · Sobre / Manifesto</h2><p class="desc">Sua história, propósito e tom.</p>
+        <div><label><b>Frase-manifesto</b></label><textarea name="manifestoFrase"></textarea></div>
+        <div style="margin-top:14px"><label class="req"><b>Texto completo do Sobre</b></label><textarea name="manifestoTexto" required style="min-height:160px"></textarea></div>
+        <div class="grid cols-2" style="margin-top:14px">
+          <div><label><b>Tom de voz</b></label><select name="tom"><option>Sério / premium</option><option>Próximo / amigável</option><option>Inspirador</option><option>Técnico</option><option>Descontraído</option></select></div>
+          <div><label><b>Público-alvo</b></label><input name="publico"></div>
+        </div>
+      </div>
+    </section>
+    <section class="step" data-title="Números & diferenciais">
+      <div class="card"><h2>3 · Números que provam</h2><p class="desc">Estatísticas e conquistas.</p>
+        <div id="statsList"></div>
+        <button type="button" class="add-btn" onclick="addRepeat('statsList','stat')">+ Adicionar número</button>
+      </div>
+    </section>
+    <section class="step" data-title="Estrutura / Serviços">
+      <div class="card"><h2>4 · Estrutura ou Serviços</h2><p class="desc">Ambientes, produtos ou serviços.</p>
+        <div id="servList"></div>
+        <button type="button" class="add-btn" onclick="addRepeat('servList','serv')">+ Adicionar item</button>
+      </div>
+    </section>
+    <section class="step" data-title="Programas / Soluções">
+      <div class="card"><h2>5 · Programas / soluções</h2><p class="desc">Métodos, pacotes, modalidades.</p>
+        <div id="progList"></div>
+        <button type="button" class="add-btn" onclick="addRepeat('progList','prog')">+ Adicionar programa</button>
+      </div>
+    </section>
+    <section class="step" data-title="Depoimentos">
+      <div class="card"><h2>6 · Depoimentos</h2><p class="desc">Até 3 depoimentos.</p>
+        <div id="depList"></div>
+        <button type="button" class="add-btn" onclick="addRepeat('depList','dep')">+ Adicionar depoimento</button>
+      </div>
+    </section>
+    <section class="step" data-title="Planos & Preços">
+      <div class="card"><h2>7 · Planos / Preços</h2><p class="desc">Pacotes e mensalidades.</p>
+        <div id="planList"></div>
+        <button type="button" class="add-btn" onclick="addRepeat('planList','plan')">+ Adicionar plano</button>
+      </div>
+    </section>
+    <section class="step" data-title="Perguntas frequentes">
+      <div class="card"><h2>8 · FAQ</h2><p class="desc">Dúvidas frequentes.</p>
+        <div id="faqList"></div>
+        <button type="button" class="add-btn" onclick="addRepeat('faqList','faq')">+ Adicionar pergunta</button>
+      </div>
+    </section>
+    <section class="step" data-title="Contato & redes">
+      <div class="card"><h2>9 · Contato & redes</h2><p class="desc">Como te encontrar.</p>
+        <div class="grid cols-2">
+          <div><label class="req"><b>WhatsApp</b></label><input name="whatsapp" required></div>
+          <div><label class="req"><b>E-mail</b></label><input name="emailContato" type="email" required></div>
+          <div><label><b>Endereço</b></label><input name="endereco"></div>
+          <div><label><b>Horário</b></label><input name="horario"></div>
+          <div><label><b>Instagram</b></label><input name="instagram"></div>
+          <div><label><b>TikTok</b></label><input name="tiktok"></div>
+          <div><label><b>YouTube</b></label><input name="youtube"></div>
+          <div><label><b>LinkedIn</b></label><input name="linkedin"></div>
+        </div>
+        <div style="margin-top:14px"><label><b>Observações / referências</b></label><textarea name="obs"></textarea></div>
+      </div>
+    </section>
+    <section class="step" data-title="Concluído">
+      <div class="card success">
+        <div class="pill">Recebido</div>
+        <div class="check">✓</div>
+        <h2>Briefing enviado com sucesso.</h2>
+        <p class="desc" style="margin-top:8px">Em breve nossa equipe entra em contato.</p>
+        <button class="btn-primary" type="button" onclick="downloadJSON()">Baixar cópia (.json)</button>
+      </div>
+    </section>
+    <div class="nav">
+      <button type="button" class="btn-ghost" id="prevBtn" onclick="go(-1)">← Voltar</button>
+      <button type="button" class="btn-primary" id="nextBtn" onclick="go(1)">Próximo →</button>
+    </div>
+  </form>
+  <footer>© Fluxo Digital Tech · Briefing v1.0</footer>
+</div>
+<script>
+  const WEBHOOK_URL = 'https://webhook.fluxodigitaltech.com.br/webhook/briefing';
+  const templates = {
+    stat:'<div class="grid cols-2"><div><label>Número</label><input name="stat_num[]"></div><div><label>Rótulo</label><input name="stat_label[]"></div></div>',
+    serv:'<label>Nome</label><input name="serv_nome[]"><label style="margin-top:8px">Descrição</label><textarea name="serv_desc[]"></textarea>',
+    prog:'<label>Nome</label><input name="prog_nome[]"><label style="margin-top:8px">Descrição</label><textarea name="prog_desc[]"></textarea>',
+    dep:'<div class="grid cols-2"><div><label>Nome</label><input name="dep_nome[]"></div><div><label>Profissão</label><input name="dep_titulo[]"></div></div><label style="margin-top:8px">Texto</label><textarea name="dep_texto[]"></textarea>',
+    plan:'<div class="grid cols-2"><div><label>Nome</label><input name="plan_nome[]"></div><div><label>Preço</label><input name="plan_preco[]"></div></div><label style="margin-top:8px">O que inclui</label><textarea name="plan_inclui[]"></textarea>',
+    faq:'<label>Pergunta</label><input name="faq_q[]"><label style="margin-top:8px">Resposta</label><textarea name="faq_a[]"></textarea>'
+  };
+  function addRepeat(id,key){
+    const div=document.createElement('div');div.className='repeat-block';
+    div.innerHTML='<button type="button" class="rm" onclick="this.parentNode.remove()">remover ✕</button>'+templates[key];
+    document.getElementById(id).appendChild(div);
+  }
+  ['statsList','servList','progList','depList','planList','faqList'].forEach((id,i)=>addRepeat(id,['stat','serv','prog','dep','plan','faq'][i]));
+  const steps=document.querySelectorAll('.step');const totalReal=steps.length-1;let cur=0;
+  function render(){
+    steps.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    document.getElementById('bar').style.width=(cur/totalReal*100)+'%';
+    document.getElementById('stepBadge').textContent=cur<totalReal?`Etapa ${cur+1} / ${totalReal}`:'Concluído';
+    document.getElementById('stepText').textContent=steps[cur].dataset.title;
+    document.getElementById('prevBtn').style.visibility=cur===0||cur===totalReal?'hidden':'visible';
+    const n=document.getElementById('nextBtn');
+    n.textContent=cur===totalReal-1?'Enviar briefing ✓':'Próximo →';
+    n.style.display=cur===totalReal?'none':'inline-block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function go(dir){
+    if(dir>0){
+      const reqs=steps[cur].querySelectorAll('[required]');
+      for(const r of reqs){if(!r.value.trim()){r.style.borderColor='var(--err)';r.focus();return}r.style.borderColor=''}
+      if(cur===totalReal-1){submit();return}
+    }
+    cur=Math.max(0,Math.min(totalReal,cur+dir));render();
+  }
+  render();
+  let payload={};
+  async function submit(){
+    const fd=new FormData(document.getElementById('form'));const obj={};
+    for(const [k,v] of fd.entries()){if(k.endsWith('[]')){obj[k]=obj[k]||[];obj[k].push(v)}else obj[k]=v;}
+    obj.criado_em=new Date().toISOString();
+    payload=obj;
+    const btn=document.getElementById('nextBtn');btn.disabled=true;btn.textContent='Enviando...';
+    try{
+      await fetch(WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
+      cur=totalReal;render();
+    }catch(e){
+      alert('Não foi possível enviar agora. Você pode baixar uma cópia abaixo.');
+      cur=totalReal;render();
+    }finally{btn.disabled=false}
+  }
+  function downloadJSON(){
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='briefing-'+(payload.marca||'cliente').toLowerCase().replace(/\s+/g,'-')+'.json';a.click();
+  }
+</script>
+</body>
+</html>
